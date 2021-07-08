@@ -26,15 +26,21 @@ Function New-PoShMonConfiguration
             { $newConfiguration.OperatingSystem = $configurationItem }
         if ($configurationItem.TypeName -eq "PoShMon.ConfigurationItems.WebSite")
             { $newConfiguration.WebSite = $configurationItem }
+        if ($configurationItem.TypeName -eq "PoShMon.ConfigurationItems.SharePoint")
+            { $newConfiguration.SharePoint = $configurationItem }
+        if ($configurationItem.TypeName -eq "PoShMon.ConfigurationItems.Extensibility")
+            { $newConfiguration.Extensibility = $configurationItem }
         elseif ($configurationItem.TypeName.StartsWith("PoShMon.ConfigurationItems.NotificationCollection"))
             { 
                 $newConfiguration.Notifications += $configurationItem }
     }
 
     if ($newConfiguration.General -eq $null)
-        { $newConfiguration.General = General -ServerNames $Env:COMPUTERNAME }
+        { $newConfiguration.General = New-GeneralConfig -ServerNames $Env:COMPUTERNAME }
     if ($newConfiguration.OperatingSystem -eq $null)
-        { $newConfiguration.OperatingSystem = OperatingSystem }
+        { $newConfiguration.OperatingSystem = New-OSConfig }
+
+	$Global:PoShMonConfiguration = $newConfiguration # save for later in case it's needed
 
     return $newConfiguration
 }

@@ -2,9 +2,9 @@ Function Invoke-Repairs
 {
     [CmdletBinding()]
     Param(
-        [string[]]$RepairScripts,
+        [string[]]$RepairFunctionNames,
         [hashtable]$PoShMonConfiguration,
-        [object[]]$PoShMonOutputValues
+        [System.Collections.ArrayList]$PoShMonOutputValues
     )
 
     Begin
@@ -14,31 +14,28 @@ Function Invoke-Repairs
 
     Process
     {
-        foreach ($repairScript in $RepairScripts)
+        foreach ($repairFunctionName in $RepairFunctionNames)
         {
-            if (Test-Path $repairScript)
-            {
-                . $repairScript # Load the script
 
-                $repairFunctionName = $repairScript | Get-Item | Select -ExpandProperty BaseName
-
-                try {
-                    $outputValues += & $repairFunctionName $PoShMonConfiguration $PoShMonOutputValues
-                } catch {
-                    $outputValues += @{
-                        "SectionHeader" = $repairFunctionName;
-                        "Exception" = $_.Exception
-                    }
+            try {
+                $outputValues += & $repairFunctionName $PoShMonConfiguration $PoShMonOutputValues
+            } catch {
+                $outputValues += @{
+                    "SectionHeader" = $repairFunctionName;
+                    "Exception" = $_.Exception
                 }
-
-            } else {
-                Write-Warning "Script not found, will be skipped: $scriptToImport"
             }
+
         }
     }
     
     End
     {
+        if ($outputValues.Count -eq 0)
+            { Write-Verbose "No valid repairs found to perform" }
+
+        Initialize-RepairNotifications -PoShMonConfiguration $PoShMonConfiguration -RepairOutputValues $outputValues
+
         return $outputValues
     }
 }

@@ -1,11 +1,11 @@
-Function General
+Function New-GeneralConfig
 {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName='PrimaryServer')]
     param(
         [string]$EnvironmentName = $env:COMPUTERNAME,
         [int]$MinutesToScanHistory = 15,
         [string[]]$TestsToSkip = @(),
-        [parameter(ParameterSetName="PrimaryServer",HelpMessage="For monitoring a 'farm'' product, like SharePoint, specify a server name to run the main monitoring operations.")]
+        [parameter(ParameterSetName="PrimaryServer",HelpMessage="For monitoring a 'farm' product, like SharePoint, specify a server name to run the main monitoring operations.")]
         [string]$PrimaryServerName = $null,
         [parameter(ParameterSetName="ServerNames",HelpMessage="For monitoring standalone servers, specify the names of the servers to monitor.")]
         [string[]]$ServerNames = $null,
@@ -14,7 +14,7 @@ Function General
         [switch]$SkipVersionUpdateCheck = $false,
         [pscredential]$InternetAccessRunAsAccount,
         [parameter(HelpMessage="Web proxy for internet access (e.g. for notification API calls)")]
-        [string]$ProxyAddress
+        [string]$ProxyAddress = $null
     )
 
     if ($Script:PoShMon.ConfigurationItems.General -eq $null)

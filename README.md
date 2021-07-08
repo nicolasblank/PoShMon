@@ -7,7 +7,7 @@ Some of the key features / benefits of PoShMon are:
 * Core operating system and web-site monitoring
 * Specialized SharePoint monitoring
 * Supports frequent/critical as well as comprehensive daily monitoring
-* Email, Pushbullet (mobile) and Office 365 Teams ("Chat-ops") notifications
+* Email, Pushbullet (mobile), Office 365 Teams ("Chat-ops") and Twilio (SMS) notifications
 * Provides a framework for a ['self-healing'](https://github.com/HiltonGiesenow/PoShMon/wiki/Creating-a-Self-Healing-System-Using-PoShMon) system
 
 ## Installation Instructions
@@ -94,54 +94,67 @@ Of course there are loads of monitoring systems and tools out there, both paid a
 ---
 
 ## Release Notes
-0.11.0
-* Created 'Self-Healing' Framework into which custom scripts can be injected
-* Added ability to skip auto-discovered Windows services
-* Fixed bug where Pushbullet and Office 365 Teams were not showing Environment name
-* Fixed bug in harddrive space percent test
-* Fixed bug in cpu test for standalone 'minimal config test
+1.3.0
+* Added storing of exceptions for later resolution, where possible (Exception might be environmental, and repairable)
+* Fixed bug in Windows Event Log monitoring returning empty details
+* Added platform build number to email notifications (SharePoint and OOS)
+* Added ability to set SMTP authentication separately from other Internet access
 
-0.10.1
-* Added Proxy settings to enable PushBullet and 0365 Teams connectivity
-* Introduced a 'minimum configuration' for local machine monitoring
-* Fixed bug in SharePoint UPS Sync monitor
-* Added Resolver for High CPU usage while SharePoint Search Index is running
-* Improved Verbose output logging
-* Added option for harddrive space to track by percent
-* Add a check for any invalid TestsToSkip
-* Fixed bug in Update-PoShMon
+1.2.0
+* Improved ability to ignore event log entries (based on a minimum count)
+* Added a repair for Office Online Server (previously 'Office Web Apps') to repair the W3C service if stopped
+* Improved discovery of other servers in a 'farm' product (e.g. SharePoint, Office Online Server)
+* Improved some Verbose output
+* Improved formatting for Exception and Repair emails
+* Other minor bug fixes
 
-0.9.2
-* Fixed bug in email output
-* Fixed bug with not terminating Remote sessions correctly
+1.1.1
+* Various bug fixes in Web tests
+* Renamed html ad hoc report function
+* Various bug fixes in html ad hoc report function
 
-0.9.1
-* Fixed a bug crossing hour and day boundaries for Server Time test
-* Fixed a bug with Services on server testing in non-SharePoint environments
+1.1.0
+* Added ability to create ad-hoc html report
+* For Drive Space test, added Volume Name to output
+* Added html formatting to Exception emails
 
-0.9.0
-* Added a Server Time test for servers drifting apart
-* Add an 'update' notification for new versions of PoShMon
-* Add an 'Update' command to make updating PoShMon easier
-* Add Try..Catch error handling to each Test method
-* Switched to dynamically invoking test methods by name
-* Created a shared 'Core' monitoring function
+1.0.0
+* Official 1.0.0 release
+* Added SMS notification via Twilio
+* Improved SharePoint Distributed Cache health test
+* Fixed some unit tests
+* Fixed Unsupported Verbs warning
+* Notification refactor
+* Fixed failing Websites test for cookie prompt
+* Fixed CPU test failing on local machine
+* Fixed CPU test bug for group of servers
+* Fixed EventLog test bug
+* Improved failure message for Windows Service tests
 
-0.8.3
-* Reduced duplication in Test code for Stopwatch
-* Fixed naming for 'Free Percent' column in Memory Test
-* For 'Critical' (i.e. NotifyOnFailure) runs, set Email Priority to High if failure occurs
-* For Exception notifications,  set Email Priority to High
-* Convert all Tests that used a PSSession parameter to using PoShMonConfiguration - improves testability
-* Added Unit Tests for every main Test-* function
+0.15.1
+* Adding capability to run without any config (to scan local machine)
+* Minor wording change
 
-0.8.2
-* Added date to UserProfileSync output
-* Added a function to initialise output for all Test methods
-* Added PoShMon version to email output
-* Added Farm Health Test (SharePoint) - not active
+0.15.0
+* Bug fixes for Pushbullet and Microsoft Teams message posting
+* Added sample for self-healing
+* Minor code cleanups
 
-0.8.1
-* Fixing a bug in the SharePoint UPS sync query for datetime
+0.14.0
+* Integration with Operation Validation Framework (OVF)
+
+0.13.0
+* Implement hyperlinks in output
+* Implemented CI server
+* Created a Merger framework (to merge multiple outputs)
+* Create a Merger for OS output
+* Removed ApplicationName from SharePoint Job Health Test
+* Add 'Last Reboot Time' test  
+
+0.12.0
+* Added Office Web Apps / Office Online Server monitoring
+* Added some style to Email output
+* Changed display to Hard Drive and Memory output
+* Fixed bug in email footer for skipped tests
 
 See [here](https://github.com/HiltonGiesenow/PoShMon/wiki/Changelog) for full Changelog

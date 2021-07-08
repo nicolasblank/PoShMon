@@ -2,27 +2,23 @@
 {
     [CmdletBinding()]
     Param(
-        [hashtable]$PoShMonConfiguration,
-        [hashtable]$PushbulletNotificationSink,
-        [string]$Subject,
-        [string]$Body,
+		[hashtable]$PoShMonConfiguration,
+		[hashtable]$NotificationSink,
+		[string]$Subject,
+		[string]$Body,
         [bool]$Critical
     )
 
     $finalMessageBody = @{
-                device_iden = $PushbulletNotificationSink.DeviceId
+                device_iden = $NotificationSink.DeviceId
                 type = "note"
-                title = $subject
-                body = $body
+                title = $Subject
+                body = $Body
              }
-
-    #$pushbulletSendUrl = "https://api.pushbullet.com/v2/pushes"
-
-    #$headers = @{ 'Access-Token' = $PushbulletNotificationSink.AccessToken }
 
     $params = @{
         Uri = "https://api.pushbullet.com/v2/pushes"
-        Headers = @{ 'Access-Token' = $PushbulletNotificationSink.AccessToken }
+        Headers = @{ 'Access-Token' = $NotificationSink.AccessToken }
         Method = "Post"
         Body = $finalMessageBody
         ErrorAction = "SilentlyContinue"
@@ -31,7 +27,7 @@
     if ($PoShMonConfiguration.General.InternetAccessRunAsAccount -ne $null)
         { $params.Add("Credential", $PoShMonConfiguration.General.InternetAccessRunAsAccount) }
 
-    if ($PoShMonConfiguration.General.ProxyAddress -ne $null)
+    if ([string]::IsNullOrEmpty($PoShMonConfiguration.General.ProxyAddress) -eq $false)
         { $params.Add("Proxy", $PoShMonConfiguration.General.ProxyAddress) }
 
     $sendMessage = Invoke-WebRequest @params

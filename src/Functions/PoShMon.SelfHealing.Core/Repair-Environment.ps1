@@ -2,18 +2,18 @@ Function Repair-Environment
 {
     [CmdletBinding()]
     Param(
-        [hashtable]$poShMonConfiguration,
-        [object[]]$PoShMonOutputValues,
+        [hashtable]$PoShMonConfiguration,
+        [System.Collections.ArrayList]$PoShMonOutputValues,
         [string[]]$RepairScripts
     )
 
-    #$commands = Add-Scripts $RepairScripts
+    $repairFunctionNames = Import-RepairScripts $RepairScripts
 
-    try {
-        $repairOutput = Invoke-Repairs $RepairScripts $PoShMonConfiguration $PoShMonOutputValues
-    } catch {
-        Send-ExceptionNotifications -PoShMonConfiguration $PoShMonConfiguration -Exception $_.Exception -Action "Repairing"
-    }
+    #try {
+        $repairOutput = Invoke-Repairs $repairFunctionNames $PoShMonConfiguration $PoShMonOutputValues
+    #} catch {
+    #    Send-ExceptionNotifications -PoShMonConfiguration $PoShMonConfiguration -Exception $_.Exception -Action "Repairing"
+    #}
 
-    Initialize-RepairNotifications -PoShMonConfiguration $PoShMonConfiguration -RepairOutputValues $repairOutput
+    return $repairOutput
 }

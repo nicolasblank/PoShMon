@@ -1,4 +1,4 @@
-Function Email
+Function New-EmailConfig
 {
     [CmdletBinding()]
     param(
@@ -9,6 +9,7 @@ Function Email
         [parameter(Mandatory)]
         [string]$SmtpServer,
         [int]$Port = 25,
+        [pscredential]$SmtpCredential,
         [bool]$UseSSL = $false
     )
 
@@ -18,6 +19,7 @@ Function Email
         FromAddress = $FromAddress
         SmtpServer = $SmtpServer
         Port = $Port
+        SmtpCredential = $SmtpCredential
         UseSSL = $UseSSL
     }
 }
